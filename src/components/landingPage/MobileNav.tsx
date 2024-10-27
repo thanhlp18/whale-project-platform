@@ -7,7 +7,7 @@ import {
 import { NAV_LINKS } from "@/constants/constants.index";
 import Image from "next/image";
 import Link from "next/link";
-import Button from "./landingPage/Button";
+import Button from "./Button";
 
 const MobileNav = () => {
   return (

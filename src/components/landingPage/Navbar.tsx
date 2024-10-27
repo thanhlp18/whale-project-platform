@@ -1,6 +1,6 @@
 import { signIn } from "next-auth/react";
 import Image from "next/image";
-import Button from "./landingPage/Button";
+import Button from "./Button";
 
 const Navbar = () => {
   const handleWithGoogle = async (e: React.MouseEvent<HTMLButtonElement>) => {

@@ -1,6 +1,6 @@
 // src/components/Layout.tsx
-import Footer from '@/components/Footer';
-import Navbar from '@/components/Navbar';
+import Footer from '@/components/landingPage/Footer';
+import Navbar from '@/components/landingPage/Navbar';
 import React from 'react';
 
 type LayoutProps = {

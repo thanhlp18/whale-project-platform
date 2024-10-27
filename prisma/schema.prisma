@@ -62,3 +62,13 @@ model VerificationRequest {
 
   @@unique([identifier, token])
 }
+
+model Religion {
+  id                    String    @id @default(uuid())
+  name                  String    // Tên tôn giáo
+  origin                String?   // Nguồn gốc
+  description           String?   // Mô tả
+  location              String?   // Địa điểm
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+}

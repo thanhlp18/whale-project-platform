@@ -9,6 +9,9 @@ const nextConfig = {
     "rc-tree",
     "rc-table",
   ],
+  images: {
+    domains: ['ui-avatars.com', 'loremflickr.com','image.giacngo.vn', 'www.gravatar.com',' www.vnctongiao.org', 'i.ex-cdn.com', 'www.vnctongiao.org'],
+  },
 };
 
 export default nextConfig;
