@@ -29,7 +29,7 @@ export const env = createEnv({
 
     // Image service
     IMAGE_SERVICE_URL: z.string().default("https://imgpush.k8s.thanhshiba.live"),
-    IMAGE_SERVICE_PROCESSOR: z.string("")
+    IMAGE_SERVICE_PROCESSOR: z.string("").default("")
     
   },
   client: {
