@@ -11,9 +11,9 @@ jobs:
     environment: Development
 
     env:
-      IMAGE_NAME: ${{ secrets.DOCKER_IMAGE_NAME }}
-      IMAGE_TAG: ${{ secrets.DOCKER_IMAGE_TAG }}
-      PLATFORM:  ${{ secrets.PLATFORM }}
+      IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }}
+      IMAGE_TAG: ${{ vars.DOCKER_IMAGE_TAG }}
+      PLATFORM:  ${{ vars.PLATFORM }}
 
     steps:
       - name: Checkout repository
