@@ -6,6 +6,10 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
+
+generator json {
+  provider = "prisma-json-types-generator"
+}
  
 model User {
   id                    String     @id @default(uuid())
@@ -63,12 +67,35 @@ model VerificationRequest {
   @@unique([identifier, token])
 }
 
+
+model CachedLangfusePrompt {
+  id        String   @id @default(uuid())
+  name      String
+  /// [PrismaLangfusePrompt]
+  prompt    Json
+  createdAt DateTime @default(now()) @map("created_at")
+  isActive  Boolean  @default(true) @map("is_active")
+
+  @@map("cached_langfuse_prompt")
+}
+
 model Religion {
   id                    String    @id @default(uuid())
-  name                  String    // Tên tôn giáo
-  origin                String?   // Nguồn gốc
-  description           String?   // Mô tả
-  location              String?   // Địa điểm
+  name                  String    
+  origin                String?   
+  description           String?   
+  specialFestival       String?   @map("special_festival")
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
+}
+
+model BlogPost {
+  id        String   @id @default(uuid())
+  img       String
+  title     String
+  userpic   String
+  username  String
+  desc      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

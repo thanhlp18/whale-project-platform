@@ -8,7 +8,7 @@ type ReligionInformationProps = {
 
 const ReligionInformation: React.FC<ReligionInformationProps> = ({ religion }) => {
     return (
-        <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-md">
+        <div className="flex flex-col items-center p-4 bg-pattern-3">
             <h2 className="text-2xl font-bold mb-4">{religion.name}</h2>
             {religion.origin && (
                 <p className="mb-2">
