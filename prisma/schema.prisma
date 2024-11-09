@@ -85,6 +85,8 @@ model Religion {
   origin                String?   
   description           String?   
   specialFestival       String?   @map("special_festival")
+  referenceSources      String[]  @map("reference_sources") @default([])
+  note                  String?    
   createdAt             DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
 }

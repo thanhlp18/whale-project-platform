@@ -7,7 +7,7 @@ import FormData from "form-data";
 
 export interface ImageService {
   readFile(path: string): Promise<Buffer>;
-  saveFile(files: formidable.File): Promise<{ url: string }>;
+  saveFile(files: formidable.File): Promise<string>;
 }
 
 class ImgPushService implements ImageService {
@@ -17,7 +17,7 @@ class ImgPushService implements ImageService {
     return Buffer.from("dummy");
   }
 
-  async saveFile(file: formidable.File): Promise<{ url: string }> {
+  async saveFile(file: formidable.File): Promise<string> {
     const formData = new FormData();
 
     // Handle single file upload
@@ -37,7 +37,7 @@ class ImgPushService implements ImageService {
         ...formData.getHeaders(),
       },
     });
-    return { url: `${env.IMAGE_SERVICE_URL}/${res.data.filename}` };
+    return `${env.IMAGE_SERVICE_URL}/${res.data.filename}`; // File URL
   }
 }
 

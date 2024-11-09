@@ -4,14 +4,12 @@ import React from "react";
 
 type UploadPictureProps = {
   selectedImage: string | null;
-  uploading: boolean;
   handleImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleUpload: (file: File) => Promise<void>;
 };
 
 const UploadPicture: React.FC<UploadPictureProps> = ({
   selectedImage,
-  uploading,
   handleImageChange,
 }) => {
   return (
@@ -41,7 +39,6 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
           />
         </div>
       )}
-      {uploading && <div className="mt-4 text-gray-500">Uploading...</div>}
     </div>
   );
 };

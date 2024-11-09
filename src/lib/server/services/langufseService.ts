@@ -203,6 +203,13 @@ const getLangfusePromptFromCached = async (promptName: string) => {
             where: { name: promptName, isActive: true },
           });
           if (!res) return Promise.reject(null);
+          if(res.createdAt.getTime() + 60 * 1000 < new Date().getTime()) {
+            prisma.cachedLangfusePrompt.update({
+              where: { id: res.id },
+              data: { isActive: false }
+            })
+            return Promise.reject(null);
+          }
           return {
             name: res.name,
             prompt: res.prompt,
@@ -271,11 +278,14 @@ export const triggerPromptFromLangfuse = async ({
   provider,
   promptName,
   modelName,
+  imageUrl,
   ...params
 }: TriggerPromptRequest & { [key: string]: any }) => {
   const langfuseInstance = getLangfuse({
     traceName: promptName,
   });
+
+  console.log("params", params);
   const promptData = await getLangfusePromptFromCached(promptName);
   if (promptData === null) {
     logger.error("could not fetch prompt.", { promptName });
@@ -289,21 +299,41 @@ export const triggerPromptFromLangfuse = async ({
   );
 
   const config = prompt.config as LangfuseConfigType;
-  const message = prompt.compile({ ...params });
+  const instruction = prompt.compile({ ...params });
   const model = getAIModel(provider, modelName, config.temperature);
-const aa = new HumanMessage({
-  content: [
-    {
-      type: "text",
-      text: message,
-    },
-    {
-      type: "image_url",
-      image_url:
-       "https://media.thanhtra.com.vn/public/data/images/0/2021/11/04/btnguyenanh/buddha01-63.jpg?w=1319"
-    },
-  ],
-});
+  const content = imageUrl
+    ? new HumanMessage({
+        content: [
+          {
+            type: "text",
+            text: instruction,
+          },
+          { type: "image_url", url: imageUrl },
+        ],
+      })
+    : new HumanMessage({
+        content: [
+          {
+            type: "text",
+            text: instruction,
+          },
+        ],
+      });
+
+      const aa = new HumanMessage({
+        content: [
+          {
+            type: "text",
+            text: instruction,
+          },
+          {
+            type: "image_url",
+            image_url:
+            imageUrl
+          },
+        ],
+      });
+      
 
   return runWithRetry(
     async () =>
@@ -319,7 +349,7 @@ const aa = new HumanMessage({
           ],
         })
       ),
-    env.MAX_RETRY_RUN_LLM
+    1
   );
 };
 

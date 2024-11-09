@@ -15,7 +15,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {/* Sidebar */}
         <Sidebar />
         {/* Main Content */}
-        <div className="flex-grow max-w-7xl mx-auto p-4 ml-24 bg-gray-100">{children}</div>
+        <div className="flex-grow mx-auto p-4 ml-24 bg-gray-100">{children}</div>
       </div>
     </div>
   );

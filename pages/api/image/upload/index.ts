@@ -1,11 +1,12 @@
 import { apiHandler } from "@/lib/server/apiHandler";
 import { getFileStorageInstance } from "@/lib/server/services/imageService";
-import { Fields, Files, IncomingForm } from "formidable";
+import { triggerPromptFromLangfuse } from "@/lib/server/services/langufseService";
+import { parseFormData } from "@/lib/server/utils/parseFormData";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export const config = {
   api: {
-    bodyParser: false, 
+    bodyParser: false,
   },
 };
 
@@ -14,18 +15,7 @@ const POST = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  const data = await new Promise<{ err: any; fields: Fields; files: Files }>(
-    (resolve, reject) => {
-      const form = new IncomingForm();
-      form.parse(req, (err, fields, files) => {
-        if (err) {
-          reject({ err }); 
-        } else {
-          resolve({ err: null, fields, files });
-        }
-      });
-    }
-  );
+  const data = await parseFormData(req);
 
   const uploadedFiles = data.files["file"];
   if (
@@ -37,12 +27,23 @@ const POST = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const imageService = getFileStorageInstance("IMG_PUSH");
+  const fields: { [key: string]: string } = Object.entries(data.fields).reduce((acc: { [key: string]: string }, [key, value]) => {
+    acc[key] = value ? value.toString() : "";
+    return acc;
+  }, {});
 
-  const result = await imageService.saveFile(uploadedFiles[0]).catch((err) => {
-    console.error("Error uploading file:", err.message);
-    return { url: "" };
+  const ress = await triggerPromptFromLangfuse({
+    provider: "VERTEXAI",
+    promptName: "analyze_buddhist_image_to_vietnamese_json",
+    modelName: "gemini-1.5-flash-002",
+    imageUrl: await imageService.saveFile(uploadedFiles[0]),
+    ...fields,
   });
-  return res.status(200).json({ url: result.url });
+
+  return res.status(200).json({
+    success: true,
+    data: ress,
+  });
 };
 
 export default apiHandler({ POST });
