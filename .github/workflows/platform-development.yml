@@ -10,11 +10,6 @@ jobs:
     runs-on: ubuntu-20.04
     environment: Development
 
-    env:
-      IMAGE_NAME: ${{ vars.DOCKER_IMAGE_NAME }}
-      IMAGE_TAG: ${{ vars.DOCKER_IMAGE_TAG }}
-      PLATFORM:  ${{ vars.PLATFORM }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -35,7 +30,7 @@ jobs:
           docker buildx inspect --bootstrap
 
           # Build and push the Docker image for the specified platform
-          docker buildx build --platform $PLATFORM -t $IMAGE_NAME:$IMAGE_TAG --push .
+          docker buildx build --platform ${{ vars.PLATFORM }} -t  ${{ vars.DOCKER_IMAGE_NAME }}:${{ vars.PLATFORM }} --push .
 
       - name: Log out from Docker Hub
         run: docker logout
