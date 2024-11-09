@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
+    environment: Development
 
     env:
       IMAGE_NAME: ${{ secrets.DOCKER_IMAGE_NAME }}
