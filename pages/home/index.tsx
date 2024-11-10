@@ -4,9 +4,10 @@ import WhaleButton from "@/components/systemDesign/button";
 import HomeLayout from "@/layout/homeLayout";
 import { useUploadImageMutation } from "@/redux/services/imageAnalyzingApi";
 import { Religion } from "@prisma/client";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const Home: React.FC = () => {
+  const loadingRef = useRef<HTMLDivElement>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [location, setLocation] = useState<string>("");
   const [pagodaName, setPagodaName] = useState<string>("");
@@ -43,10 +44,17 @@ const Home: React.FC = () => {
     uploadImage(formData);
   };
 
+  useEffect(() => {
+    if (isAnalyzingRegionData && loadingRef.current) {
+      loadingRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [isAnalyzingRegionData])
+
+
   return (
     <HomeLayout>
-      <div className="flex flex-row items-center justify-center w-full h-full gap-12 rounded-lg overflow-hidden bg-white">
-        <div className="w-2/5 flex flex-col h-full bg-pattern-3 before-overlay rounded-lg overflow-hidden">
+      <div className="flex flex-col items-center justify-center w-full md:h-full gap-12 rounded-lg overflow-hidden bg-white">
+        <div className="md:w-2/5 flex flex-col h-full bg-pattern-3 before-overlay rounded-lg overflow-hidden">
           <UploadPicture
             selectedImage={selectedImage}
             handleImageChange={handleImageChange}
@@ -87,10 +95,11 @@ const Home: React.FC = () => {
             </div>
           )}
         </div>
-        <div className="w-3/5 h-full flex flex-col gap-4 ">
+        <div className="md:w-3/5 h-full flex flex-col gap-4 ">
           {(!isAnalyzingRegionData) ? (
             regionData?.data ? <ReligionInformation religion={regionData.data} /> : <div className="flex flex-col justify-center items-center h-full mb-48"></div>
-          ) :  <div className="flex flex-col justify-center items-center h-full mb-48">
+          ) :  
+          <div className="flex flex-col justify-center items-center h-full mb-48 md:p-0 p-4" ref={loadingRef}>
           <video
              src="/home/ai_analyzing.mp4"
              autoPlay={true}

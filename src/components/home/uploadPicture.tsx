@@ -35,7 +35,7 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
           <img
             src={selectedImage}
             alt="Selected"
-            className="w-64 h-64 object-cover rounded-lg"
+            className="w-48 h-48 object-cover rounded-lg"
           />
         </div>
       )}
