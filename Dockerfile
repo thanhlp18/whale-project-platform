@@ -1,5 +1,5 @@
 # Use an official Node.js runtime as a parent image
-FROM node:18-alpine
+FROM node:18-alpine AS builder
 
 # Set the working directory
 WORKDIR /app
@@ -22,11 +22,27 @@ RUN npx prisma generate
 # Build the Next.js project
 RUN npm run build
 
-# Deploy Prisma migrations
-RUN npx prisma migrate deploy
+# Use an official Node.js runtime as a parent image for the runtime environment
+FROM node:18-alpine
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the built application from the builder stage
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/package.json ./package.json
+
+# Ensure the nextjs user exists and use it
+RUN addgroup -S nextjs && adduser -S nextjs -G nextjs
+USER nextjs
 
 # Expose the port the app runs on
 EXPOSE 3000
 
-# Start the Next.js application
-CMD ["npm", "start"]
+# Set environment variables
+ENV PORT 3000
+
+# Run Prisma migrations and start the Next.js application
+CMD npx prisma migrate deploy && node server.js
