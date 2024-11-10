@@ -22,6 +22,9 @@ RUN npx prisma generate
 # Build the Next.js project
 RUN npm run build
 
+# Deploy Prisma migrations
+RUN npx prisma migrate deploy
+
 # Expose the port the app runs on
 EXPOSE 3000
 
