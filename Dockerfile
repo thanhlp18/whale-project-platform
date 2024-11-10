@@ -33,6 +33,8 @@ COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package.json ./package.json
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/schema.prisma ./prisma/schema.prisma
 
 # Ensure the nextjs user exists and use it
 RUN addgroup -S nextjs && adduser -S nextjs -G nextjs
