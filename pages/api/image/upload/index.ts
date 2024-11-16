@@ -2,6 +2,7 @@ import { apiHandler } from "@/lib/server/apiHandler";
 import { getFileStorageInstance } from "@/lib/server/services/imageService";
 import { triggerPromptFromLangfuse } from "@/lib/server/services/langufseService";
 import { parseFormData } from "@/lib/server/utils/parseFormData";
+import { Religion } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 
 export const config = {
@@ -27,22 +28,27 @@ const POST = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const imageService = getFileStorageInstance("IMG_PUSH");
-  const fields: { [key: string]: string } = Object.entries(data.fields).reduce((acc: { [key: string]: string }, [key, value]) => {
-    acc[key] = value ? value.toString() : "";
-    return acc;
-  }, {});
+  const fields: { [key: string]: string } = Object.entries(data.fields).reduce(
+    (acc: { [key: string]: string }, [key, value]) => {
+      acc[key] = value ? value.toString() : "";
+      return acc;
+    },
+    {}
+  );
+
+  const imageUrl = await imageService.saveFile(uploadedFiles[0]);
 
   const ress = await triggerPromptFromLangfuse({
     provider: "VERTEXAI",
     promptName: "analyze_buddhist_image_to_vietnamese_json",
     modelName: "gemini-1.5-flash-002",
-    imageUrl: await imageService.saveFile(uploadedFiles[0]),
+    imageUrl: imageUrl,
     ...fields,
   });
 
   return res.status(200).json({
     success: true,
-    data: ress,
+    data: { ...(ress as unknown as Religion), imageUrl: imageUrl },
   });
 };
 

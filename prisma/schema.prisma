@@ -2,7 +2,7 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
- 
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,34 +10,36 @@ generator client {
 generator json {
   provider = "prisma-json-types-generator"
 }
- 
+
 model User {
-  id                    String     @id @default(uuid())
-  name                  String
-  email                 String?    @unique
-  emailVerified         DateTime?   @map("email_verified")
-  image                 String?
-  createdAt             DateTime   @default(now())
-  updatedAt             DateTime   @updatedAt
-  accounts              Account[]
-  sessions              Session[]
+  id            String    @id @default(uuid())
+  name          String
+  email         String?   @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+
   @@map("users")
 }
+
 model Account {
-  id                 String    @id @default(cuid())
-  userId              String    @map("user_id")
-  type                 String?
-  provider           String
-  providerAccountId  String    @map("provider_account_id")
-  token_type         String?
-  refresh_token      String?   @db.Text
-  access_token       String?   @db.Text
-  expires_at         Int?
-  scope              String?
-  id_token           String? @db.Text
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
-  user               User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                String   @id @default(cuid())
+  userId            String   @map("user_id")
+  type              String?
+  provider          String
+  providerAccountId String   @map("provider_account_id")
+  token_type        String?
+  refresh_token     String?  @db.Text
+  access_token      String?  @db.Text
+  expires_at        Int?
+  scope             String?
+  id_token          String?  @db.Text
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@map("accounts")
@@ -46,10 +48,10 @@ model Account {
 model Session {
   id           String   @id @default(cuid())
   userId       String?  @map("user_id")
-  sessionToken String   @db.Text @map("session_token") @unique
-  accessToken  String?  @db.Text @map("access_token")
+  sessionToken String   @unique @map("session_token") @db.Text
+  accessToken  String?  @map("access_token") @db.Text
   expires      DateTime
-  user         User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
@@ -67,7 +69,6 @@ model VerificationRequest {
   @@unique([identifier, token])
 }
 
-
 model CachedLangfusePrompt {
   id        String   @id @default(uuid())
   name      String
@@ -80,15 +81,27 @@ model CachedLangfusePrompt {
 }
 
 model Religion {
-  id                    String    @id @default(uuid())
-  name                  String    
-  origin                String?   
-  description           String?   
-  specialFestival       String?   @map("special_festival")
-  referenceSources      String[]  @map("reference_sources") @default([])
-  note                  String?    
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
+  id               String   @id @default(uuid())
+  name             String
+  origin           String?
+  description      String?
+  specialFestival  String?  @map("special_festival")
+  referenceSources String[] @default([]) @map("reference_sources")
+  note             String?
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+  image            ReligionImage[]
+  @@map("religion")
+}
+
+model ReligionImage {
+  id         String   @id @default(uuid())
+  url        String
+  religionId String @map("religion_id")
+  religion   Religion @relation(fields: [religionId], references: [id])
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+  @@map("religion_image")
 }
 
 model BlogPost {
@@ -98,6 +111,7 @@ model BlogPost {
   userpic   String
   username  String
   desc      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  @@map("blog_post")
 }

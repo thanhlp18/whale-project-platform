@@ -6,9 +6,9 @@ import Hero from "@/components/landingPage/Hero";
 import Layout from "@/layout/defaultLayout";
 type Props = {};
 
-function App({ }: Props) {
+function App({}: Props) {
   return (
-    <Layout>
+    <Layout data-theme="mytheme">
       <Hero />
       <Camp />
       <Guide />
@@ -17,7 +17,5 @@ function App({ }: Props) {
     </Layout>
   );
 }
-
-
 
 export default App;

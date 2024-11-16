@@ -103,5 +103,10 @@ module.exports = {
         }
       );
     },
+    require('daisyui'),
   ],
+  daisyui: {
+    themes: [ "bumblebee"],
+    styled: true,
+  },
 };

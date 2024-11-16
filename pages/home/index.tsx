@@ -53,8 +53,8 @@ const Home: React.FC = () => {
 
   return (
     <HomeLayout>
-      <div className="flex flex-col items-center justify-center w-full md:h-full gap-12 rounded-lg overflow-hidden bg-white">
-        <div className="md:w-2/5 flex flex-col h-full bg-pattern-3 before-overlay rounded-lg overflow-hidden">
+      <div className="flex flex-col md:flex-row items-center justify-center w-full h-fit md:h-full gap-12 rounded-lg overflow-hidden bg-white">
+        <div className="w-full md:w-2/5 flex flex-col h-full bg-pattern-3 before-overlay rounded-lg overflow-hidden">
           <UploadPicture
             selectedImage={selectedImage}
             handleImageChange={handleImageChange}

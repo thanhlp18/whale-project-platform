@@ -59,7 +59,7 @@ const Blog = () => {
             {data.map((item: BlogPost) => (
                 <Link href={`/blog/${item._id}`} key={item.id}>
                     <div className="flex items-center pb-10 flex-col lg:flex-row gap-10">
-                        <div className="relative w-[85vw] h-[65vw] md:h-[330px] md:w-[500px]">
+                        <div className="relative w-full h-[65vw] md:h-[330px] lg:w-[500px]">
                             <Image src={item.img} alt="blog image" fill={true} className="object-cover rounded-md"></Image>
                         </div>
                         <div className="md:basis-[55%] md:ml-auto mr-auto md:mr-0">

@@ -1,14 +1,29 @@
 // src/components/religionInformation.tsx
+import WhaleButton from "@/components/systemDesign/button";
+import { useSharePublicImageMutation } from "@/redux/services/imageAnalyzingApi";
 import { Religion } from "@prisma/client";
+import { notification } from "antd";
 import React from "react";
 
 type ReligionInformationProps = {
-  religion: Religion;
+  religion: Religion & { imageUrl: string };
 };
 
 const ReligionInformation: React.FC<ReligionInformationProps> = ({
   religion,
 }) => {
+  const [sharePublic, { isSuccess: isShareSuccess }] =
+    useSharePublicImageMutation();
+  const handleShare = () => {
+    sharePublic(religion).then((res) => {
+      notification.success({
+        message: "Chia sẻ kết quả thành công",
+        description: "Kết quả đã được chia sẻ thành công",
+        duration: 3,
+      });
+    });
+  };
+
   return (
     <div className="flex flex-col items-center p-4">
       <h2 className="text-2xl font-bold mb-4">{religion.name}</h2>
@@ -38,6 +53,15 @@ const ReligionInformation: React.FC<ReligionInformationProps> = ({
         <p className="mb-2">
           <span className="font-semibold">Ghi chú:</span> {religion.note}
         </p>
+      )}
+      {religion.name && (
+        <WhaleButton
+          variant={"primary"}
+          onClick={handleShare}
+          disabled={isShareSuccess}
+        >
+          Chia sẻ kết quả
+        </WhaleButton>
       )}
     </div>
   );
