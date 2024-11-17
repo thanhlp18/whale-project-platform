@@ -1,7 +1,8 @@
+import { trace } from '@opentelemetry/api';
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ZodError } from "zod";
 import { logger } from "../common/logger";
-import { ResponseData } from "@/lib/server/types/apiData";
+import { ResponseData } from '@/lib/server/types/apiData';
 
 enum HTTP_METHOD {
   GET = "GET",
@@ -21,8 +22,9 @@ export function apiHandler(handler: {
   return (req: NextApiRequest, res: NextApiResponse<ResponseData>) => {
     const method = req.method as HTTP_METHOD;
     if (!!method && handler[method] && typeof handler[method] === "function") {
-      return handler[method]!(req, res)
+      return trace.getTracer("platform-trace").startActiveSpan("apiHandler", span => handler[method]!(req, res)
         .catch((err) => {
+          span.recordException(err);
 
           if (err instanceof ZodError) {
             logger.error("data validation error", err.issues);
@@ -39,7 +41,7 @@ export function apiHandler(handler: {
             success: false,
             error: err instanceof Error ? err.message : err,
           });
-        })
+        }));
     }
     return res.status(405).json({
       success: false,
