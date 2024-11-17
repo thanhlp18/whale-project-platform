@@ -8,12 +8,12 @@ type Props = {};
 
 function App({}: Props) {
   return (
-    <Layout data-theme="mytheme">
+    <Layout data-theme="mytheme" >
       <Hero />
       <Camp />
       <Guide />
-      <Features />
-      <GetApp />
+      {/* <Features /> */}
+      {/* <GetApp /> */}
     </Layout>
   );
 }

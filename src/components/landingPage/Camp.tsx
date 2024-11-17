@@ -5,15 +5,9 @@ interface CampProps {
   backgroundImage: string;
   title: string;
   subtitle: string;
-  peopleJoined: string;
 }
 
-const CampSite = ({
-  backgroundImage,
-  title,
-  subtitle,
-  peopleJoined,
-}: CampProps) => {
+const CampSite = ({ backgroundImage, title, subtitle }: CampProps) => {
   return (
     <div
       className={`h-full w-full min-w-[1100px] ${backgroundImage} bg-cover bg-no-repeat lg:rounded-r-5xl 2xl:rounded-5xl`}
@@ -28,22 +22,6 @@ const CampSite = ({
             <p className="regular-14 text-white">{subtitle}</p>
           </div>
         </div>
-
-        <div className="flexCenter gap-6 ">
-          <span className="flex -space-x-4 overflow-hidden ">
-            {PEOPLE_URL.map((url) => (
-              <Image
-                src={url}
-                key={url}
-                alt="person"
-                width={52}
-                height={52}
-                className="inline-block h-10 w-10 rounded-full"
-              />
-            ))}
-          </span>
-          <p className="bold-16 md:bold-20 text-white">{peopleJoined}</p>
-        </div>
       </div>
     </div>
   );
@@ -51,32 +29,24 @@ const CampSite = ({
 
 const Camp = () => {
   return (
-    <section className="2xl:max-container relative flex flex-col py-10 lg:mb-10 lg:py-20 xl:mb-20">
+    <section className="2xl:max-container relative flex flex-col pb-10 lg:mb-20 xl:mb-20">
       <div className="hide-scrollbar flex h-[340px] w-full items-start justify-start gap-8 overflow-x-auto lg:h-[400px] xl:h-[640px]">
         <CampSite
           backgroundImage="bg-bg-img-1"
-          title="Putuk Truno Camp"
-          subtitle="Prigen, Pasuruan"
-          peopleJoined="50+ Joined"
-        />
-        <CampSite
-          backgroundImage="bg-bg-img-2"
-          title="Mountain View Camp"
-          subtitle="Somewhere in the Wilderness"
-          peopleJoined="50+ Joined"
+          title="Đại Thừa"
+          subtitle="Phật giáo Ấn Độ"
         />
       </div>
 
-      <div className="flexEnd mt-10 px-6 lg:-mt-60 lg:mr-6">
-        <div className="bg-green-50 p-8 lg:max-w-[500px] xl:max-w-[734px] xl:px-16 xl:py-20 relative w-full overflow-hidden rounded-3xl">
+      <div className="flexEnd px-6 lg:mr-4 -mt-24">
+        <div className="bg-pattern-3 before-overlay-blue p-8 lg:max-w-[500px] xl:max-w-[734px] xl:px-16 xl:py-20 relative w-full overflow-hidden rounded-3xl">
           <h2 className="regular-24 md:regular-32 2xl:regular-64 captilize text-white">
-            <strong>Feeling Lost</strong> And Not Knowing The Way?
+            Bạn muốn tìm hiểu về <strong>phật giáo qua hình ảnh</strong>
           </h2>
-          <p className="regular-14 xl:regular-16 mt-5 text-white">
-            Starting from the anxiety of the climbers when visiting a new
-            climbing location, the possibility of getting lost is very large.
-            That's why we are here for those of you who want to start an
-            adventure
+          <p className="regular-14 xl:regular-16 mt-5 text-white font-semibold">
+            Chỉ với một bức ảnh chụp tượng Phật, chùa chiền, hay bất kỳ biểu
+            tượng Phật giáo nào, Whale project sẽ giúp bạn khám phá những thông
+            tin thú vị đằng sau chúng.
           </p>
           <Image
             src="/quote.svg"
