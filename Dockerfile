@@ -19,6 +19,9 @@ COPY . .
 # Generate Prisma Client
 RUN npx prisma generate
 
+ARG ZIPKIN_COLLECTOR_ENDPOINT
+ENV ZIPKIN_COLLECTOR_ENDPOINT=${ZIPKIN_COLLECTOR_ENDPOINT}
+
 # Build the Next.js project
 RUN npm run build
 
@@ -27,6 +30,9 @@ FROM node:18-alpine
 
 # Set the working directory
 WORKDIR /app
+
+ARG ZIPKIN_COLLECTOR_ENDPOINT
+ENV ZIPKIN_COLLECTOR_ENDPOINT=${ZIPKIN_COLLECTOR_ENDPOINT}
 
 # Copy the built application from the builder stage
 COPY --from=builder /app/.next/standalone ./

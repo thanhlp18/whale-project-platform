@@ -1,4 +1,4 @@
-name: Development CI/CD
+name: Build and Push Docker Image
 
 on:
   push:
@@ -8,7 +8,14 @@ on:
 jobs:
   build:
     runs-on: ubuntu-20.04
-    environment: Development
+
+    env:
+      IMAGE_NAME: "thanhlp188/whale-project"
+      IMAGE_TAG: "v2_amd64"
+      PLATFORM: "linux/amd64"
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      ZIPKIN_COLLECTOR_ENDPOINT: ${{ vars.ZIPKIN_COLLECTOR_ENDPOINT }}
 
     steps:
       - name: Checkout repository
@@ -20,8 +27,8 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v1
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ env.DOCKER_USERNAME }}
+          password: ${{ env.DOCKER_PASSWORD }}
 
       - name: Build and push Docker image
         run: |
@@ -30,7 +37,7 @@ jobs:
           docker buildx inspect --bootstrap
 
           # Build and push the Docker image for the specified platform
-          docker buildx build --platform ${{ vars.PLATFORM }} -t  ${{ vars.DOCKER_IMAGE_NAME }}:${{ vars.DOCKER_IMAGE_TAG }} --push .
+          docker buildx build --platform $PLATFORM -t $IMAGE_NAME:$IMAGE_TAG --build-arg ZIPKIN_COLLECTOR_ENDPOINT=$ZIPKIN_COLLECTOR_ENDPOINT --push .
 
       - name: Log out from Docker Hub
         run: docker logout
