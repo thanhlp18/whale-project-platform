@@ -6,7 +6,8 @@
  *
  */
 
-import {CAN_USE_DOM} from 'shared/canUseDOM';
+import { CAN_USE_DOM } from "@/components/blog/editor/shared/src/canUseDOM";
+
 
 declare global {
   interface Document {

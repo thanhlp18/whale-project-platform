@@ -6,12 +6,8 @@
  *
  */
 
-export default function warnOnlyOnce(message: string) {
-  let run = false;
-  return () => {
-    if (!run) {
-      console.warn(message);
-    }
-    run = true;
-  };
-}
+export default function joinClasses(
+    ...args: Array<string | boolean | null | undefined>
+  ) {
+    return args.filter(Boolean).join(' ');
+  }

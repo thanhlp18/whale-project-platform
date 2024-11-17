@@ -6,12 +6,12 @@
  *
  */
 
+import joinClasses from '@/components/blog/editor/utils/joinClasses';
 import './Button.css';
 
 import * as React from 'react';
 import {ReactNode} from 'react';
 
-import joinClasses from '../utils/joinClasses';
 
 export default function Button({
   'data-test-id': dataTestId,
