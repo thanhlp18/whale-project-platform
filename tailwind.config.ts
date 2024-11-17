@@ -36,6 +36,9 @@ module.exports = {
         yellow: {
           50: "#FEC601",
         },
+        layer: {
+          10: "#F5F3F3",
+        }
       },
       backgroundImage: {
         "bg-img-1": "url('/img-1.png')",
@@ -77,6 +80,51 @@ module.exports = {
         ".before-overlay::before": {
           content: '""',
           backgroundColor: "#FF6800",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: -1, // Ensure the pseudo-element is behind the children
+          opacity: 0.9, // Adjust the opacity as needed
+        },
+        ".before-overlay-blue": {
+          position: "relative",
+          zIndex: 1, // Ensure children have a higher z-index
+        },
+        ".before-overlay-blue::before": {
+          content: '""',
+          backgroundColor: "#356275",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: -1, // Ensure the pseudo-element is behind the children
+          opacity: 0.9, // Adjust the opacity as needed
+        },
+        ".before-overlay-yellow": {
+          position: "relative",
+          zIndex: 1, // Ensure children have a higher z-index
+        },
+        ".before-overlay-yellow::before": {
+          content: '""',
+          backgroundColor: "#9a8649",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          zIndex: -1, // Ensure the pseudo-element is behind the children
+          opacity: 0.9, // Adjust the opacity as needed
+        },
+        ".before-overlay-red": {
+          position: "relative",
+          zIndex: 1, // Ensure children have a higher z-index
+        },
+        ".before-overlay-red::before": {
+          content: '""',
+          backgroundColor: "#8b0202",
           position: "absolute",
           top: 0,
           left: 0,

@@ -98,6 +98,7 @@ function BlurImage({ religion }: { religion: PublicReligionImage }) {
         <Image
           alt=""
           src={religion.url}
+          width={320}
           height={240}
           objectFit="cover"
           className={cn(
