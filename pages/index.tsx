@@ -1,19 +1,19 @@
-import Camp from "@/components/landingPage/Camp";
-import Features from "@/components/landingPage/Features";
 import GetApp from "@/components/landingPage/GetApp";
-import Guide from "@/components/landingPage/Guide";
+import UspSection from "@/components/landingPage/Usp";
 import Hero from "@/components/landingPage/Hero";
+import Statics from "@/components/landingPage/Statics";
 import Layout from "@/layout/defaultLayout";
+import Testimonial from "@/components/landingPage/Testimonial";
 type Props = {};
 
 function App({}: Props) {
   return (
     <Layout data-theme="mytheme" >
       <Hero />
-      <Camp />
-      <Guide />
-      {/* <Features /> */}
-      {/* <GetApp /> */}
+      <Statics />
+      <UspSection />
+      <Testimonial />
+      <GetApp />
     </Layout>
   );
 }

@@ -30,11 +30,16 @@ export const imageAnalyzingApi = createApi({
     }),
     getReligions: builder.query<
       ResponseData<GetAllPublicImagesResponse>,
-      { pageSize: number; pageIndex: number }
+      {
+        pageSize: number;
+        pageIndex: number;
+        filter?: string;
+        searchQuery?: string;
+      }
     >({
-      query: ({ pageSize, pageIndex }) => ({
+      query: ({ pageSize, pageIndex, filter, searchQuery }) => ({
         url: "/api/religions",
-        params: { pageSize, pageIndex },
+        params: { pageSize, pageIndex, filter, searchQuery },
       }),
     }),
   }),

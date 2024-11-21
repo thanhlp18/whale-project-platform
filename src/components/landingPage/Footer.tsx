@@ -8,63 +8,141 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="flexCenter pb-12">
-      <div className="padding-container max-container flex w-full flex-col gap-14 ">
-        <div className="flex flex-col items-start justify-center gap-[10%] md:flex-row">
-          <Link href="/" className="mb-10">
-            <Image src="hilink-logo.svg" alt="logo" width={74} height={29} />
-          </Link>
-
-          <div className="flex flex-wrap gap-10 sm:justify-between md:flex-1">
-            {FOOTER_LINKS.map((columns) => (
-              <FooterColumn title={columns.title}>
-                <ul
-                  className="regular-14 flex flex-col gap-4 text-gray-30
-                 "
-                >
-                  {columns.links.map((link) => (
-                    <Link href="/" key={link}>
-                      {link}
-                    </Link>
-                  ))}
-                </ul>
-              </FooterColumn>
-            ))}
-
-            <div className="flex flex-col gap-5 ">
-              <FooterColumn title={FOOTER_CONTACT_INFO.title}>
-                {FOOTER_CONTACT_INFO.links.map((link) => (
-                  <Link
-                    href="/"
-                    key={link.label}
-                    className="flex gap-4 md:flex-col lg:flex-row"
-                  >
-                    <p className="whitespace-nowrap">{link.label}:</p>
-                    <p className="medium-14 whitespace-nowrap text-blue-70">
-                      {link.value}
-                    </p>
-                  </Link>
-                ))}
-              </FooterColumn>
-            </div>
-
-            <div className="flex flex-col gap-5 ">
-              <FooterColumn title={SOCIALS.title}>
-                <ul className="regular-14 flex gap-4 text-gray-30">
-                  {SOCIALS.links.map((link) => (
-                    <Link href="/" key={link}>
-                      <Image src={link} alt="logo" width={24} height={24} />
-                    </Link>
-                  ))}
-                </ul>
-              </FooterColumn>
-            </div>
+    <footer className="bg-white">
+      <hr className=" border-gray-200 sm:mx-auto" />
+      <div className="max-w-screen-xl p-4 py-6 mx-auto lg:py-16 md:p-8 lg:p-10">
+        <div className="grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-5">
+          <div>
+            <h3 className="mb-6 text-sm font-semibold text-gray-900 uppercase ">
+              Công ty
+            </h3>
+            <ul className="text-gray-500 ">
+              <li className="mb-4">
+                <a href="#" className=" hover:underline">
+                  Giới thiệu
+                </a>
+              </li>
+              <li className="mb-4">
+                <a href="#" className="hover:underline">
+                  Nghề nghiệp
+                </a>
+              </li>
+              <li className="mb-4">
+                <a href="#" className="hover:underline">
+                  Trung tâm thương hiệu
+                </a>
+              </li>
+              <li className="mb-4">
+                <a href="#" className="hover:underline">
+                  Blog
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="mb-6 text-sm font-semibold text-gray-900 uppercase ">
+              Trung tâm trợ giúp
+            </h3>
+            <ul className="text-gray-500 ">
+              <li className="mb-4">
+                <a href="#" className="hover:underline">
+                  Máy chủ Discord
+                </a>
+              </li>
+              <li className="mb-4">
+                <a href="#" className="hover:underline">
+                  Twitter
+                </a>
+              </li>
+              <li className="mb-4">
+                <a href="#" className="hover:underline">
+                  Facebook
+                </a>
+              </li>
+              <li className="mb-4">
+                <a href="#" className="hover:underline">
+                  Liên hệ
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="mb-6 text-sm font-semibold text-gray-900 uppercase ">
+              Pháp lý
+            </h3>
+            <ul className="text-gray-500 ">
+              <li className="mb-4">
+                <a href="#" className="hover:underline">
+                  Chính sách bảo mật
+                </a>
+              </li>
+              <li className="mb-4">
+                <a href="#" className="hover:underline">
+                  Giấy phép
+                </a>
+              </li>
+              <li className="mb-4">
+                <a href="#" className="hover:underline">
+                  Điều khoản
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="mb-6 text-sm font-semibold text-gray-900 uppercase ">
+              Công ty
+            </h3>
+            <ul className="text-gray-500 ">
+              <li className="mb-4">
+                <a href="#" className=" hover:underline">
+                  Giới thiệu
+                </a>
+              </li>
+              <li className="mb-4">
+                <a href="#" className="hover:underline">
+                  Nghề nghiệp
+                </a>
+              </li>
+              <li className="mb-4">
+                <a href="#" className="hover:underline">
+                  Trung tâm thương hiệu
+                </a>
+              </li>
+              <li className="mb-4">
+                <a href="#" className="hover:underline">
+                  Blog
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="mb-6 text-sm font-semibold text-gray-900 uppercase ">
+              Tải xuống
+            </h3>
+            <ul className="text-gray-500 ">
+              <li className="mb-4">
+                <a href="#" className="hover:underline">
+                  iOS
+                </a>
+              </li>
+              <li className="mb-4">
+                <a href="#" className="hover:underline">
+                  Android
+                </a>
+              </li>
+              <li className="mb-4">
+                <a href="#" className="hover:underline">
+                  Windows
+                </a>
+              </li>
+              <li className="mb-4">
+                <a href="#" className="hover:underline">
+                  MacOS
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
-        <div className="border bg-gray-20" />
-        <p className="regular-14 w-full text-center text-gray-30">
-        2023 | Whale Project rights reserved
-        </p>
       </div>
     </footer>
   );

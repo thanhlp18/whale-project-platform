@@ -81,26 +81,29 @@ model CachedLangfusePrompt {
 }
 
 model Religion {
-  id               String   @id @default(uuid())
+  id               String          @id @default(uuid())
   name             String
   origin           String?
   description      String?
-  specialFestival  String?  @map("special_festival")
-  referenceSources String[] @default([]) @map("reference_sources")
+  specialFestival  String?         @map("special_festival")
+  referenceSources String[]        @default([]) @map("reference_sources")
   note             String?
-  createdAt        DateTime @default(now()) @map("created_at")
-  updatedAt        DateTime @updatedAt @map("updated_at")
+  createdAt        DateTime        @default(now()) @map("created_at")
+  updatedAt        DateTime        @updatedAt @map("updated_at")
   image            ReligionImage[]
+
   @@map("religion")
 }
 
 model ReligionImage {
   id         String   @id @default(uuid())
   url        String
-  religionId String @map("religion_id")
+  religionId String   @map("religion_id")
   religion   Religion @relation(fields: [religionId], references: [id])
+  createdBy  String?   @map("created_by")
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
+
   @@map("religion_image")
 }
 
@@ -113,5 +116,6 @@ model BlogPost {
   desc      String
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
+
   @@map("blog_post")
 }

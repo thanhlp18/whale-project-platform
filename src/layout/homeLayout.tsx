@@ -11,11 +11,11 @@ type LayoutProps = {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <div className="flex flex-col h-screen">
-      <div className="flex flex-grow">
+      <div className="flex flex-grow justify-center">
         {/* Sidebar */}
         <Sidebar />
         {/* Main Content */}
-        <div className="flex-grow mx-auto p-4 ml-24 bg-gray-100">{children}</div>
+        <div className="flex-grow ml-24 3xl:mx-auto p-4 bg-white max-w-screen-3xl">{children}</div>
       </div>
     </div>
   );

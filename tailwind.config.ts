@@ -133,6 +133,15 @@ module.exports = {
           zIndex: -1, // Ensure the pseudo-element is behind the children
           opacity: 0.9, // Adjust the opacity as needed
         },
+        keyframes: {
+          fadeIn: {
+            '0%': { opacity: 0 },
+            '100%': { opacity: 1 },
+          },
+        },
+        animation: {
+          fadeIn: 'fadeIn 2s ease-in-out',
+        },
       });
 
       // Add custom variants for pseudo-classes

@@ -31,4 +31,4 @@ export default function WhaleModal({
     </dialog>,
     document.body
   );
-}
+};

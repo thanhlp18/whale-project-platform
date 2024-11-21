@@ -2,7 +2,7 @@
 import WhaleButton from "@/components/systemDesign/button";
 import { useSharePublicImageMutation } from "@/redux/services/imageAnalyzingApi";
 import { Religion } from "@prisma/client";
-import { notification } from "antd";
+import { notification, Spin } from "antd";
 import React from "react";
 
 type ReligionInformationProps = {
@@ -12,7 +12,7 @@ type ReligionInformationProps = {
 const ReligionInformation: React.FC<ReligionInformationProps> = ({
   religion,
 }) => {
-  const [sharePublic, { isSuccess: isShareSuccess }] =
+  const [sharePublic, { isSuccess: isShareSuccess, isLoading }] =
     useSharePublicImageMutation();
   const handleShare = () => {
     sharePublic(religion).then((res) => {
@@ -59,7 +59,11 @@ const ReligionInformation: React.FC<ReligionInformationProps> = ({
           variant={"primary"}
           onClick={handleShare}
           disabled={isShareSuccess}
+          className="flex align-middle justify-center gap-2"
         >
+          {isLoading && (
+            <span className="loading loading-spinner loading-sm"></span>
+          )}
           Chia sẻ kết quả
         </WhaleButton>
       )}
