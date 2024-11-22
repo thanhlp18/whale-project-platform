@@ -47,7 +47,7 @@ RUN addgroup -S nextjs && adduser -S nextjs -G nextjs
 USER nextjs
 
 # Expose the port the app runs on
-EXPOSE 3001
+EXPOSE 3000
 
 # Set environment variables
 ENV PORT 3000

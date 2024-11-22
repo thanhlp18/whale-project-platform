@@ -64,7 +64,7 @@ export default function Gallery() {
     <HomeLayout>
       <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
         {/* Filter Row */}
-        <div className="mb-4 flex justify-between items-center gap-4">
+        <div className="mb-4 flex justify-between items-center gap-6">
           <input
             type="text"
             placeholder="Search..."
