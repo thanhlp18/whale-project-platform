@@ -2,7 +2,7 @@
 FROM node:18-alpine AS builder
 
 # Set the working directory
-WORKDIR /app
+# WORKDIR /app
 
 # Copy package.json and package-lock.json
 COPY package.json package-lock.json ./
@@ -47,7 +47,7 @@ RUN addgroup -S nextjs && adduser -S nextjs -G nextjs
 USER nextjs
 
 # Expose the port the app runs on
-EXPOSE 3000
+EXPOSE 3001
 
 # Set environment variables
 ENV PORT 3000
