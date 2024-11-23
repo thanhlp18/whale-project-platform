@@ -33,6 +33,8 @@ jobs:
           build-args: |
             BUILD_ID=${{ github.sha }}
             ZIPKIN_COLLECTOR_ENDPOINT=${{ vars.ZIPKIN_COLLECTOR_ENDPOINT }}
+            NEXT_PUBLIC_PAGE_LIMIT=${{ vars.NEXT_PUBLIC_PAGE_LIMIT }}
+            NEXT_PUBLIC_STRAPI_URL=${{ vars.NEXT_PUBLIC_STRAPI_URL }}
 
       - name: Log out from Docker Hub
         run: docker logout
