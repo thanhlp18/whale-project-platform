@@ -36,8 +36,14 @@ jobs:
 
       - name: Log out from Docker Hub
         run: docker logout
-
-      - name: Trigger Webhook
+        
+  deploy:
+    needs: build
+    environment:
+      name: Development
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger deployment
         run: |
           curl --request POST \
           --url ${{ vars.WEBHOOK_ENDPOINT }} \
