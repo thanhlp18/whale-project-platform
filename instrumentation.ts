@@ -23,6 +23,7 @@ export async function register() {
         new WinstonInstrumentation({
           enabled: true,
           logHook: (span, record) => {
+            console.log("Winston logHook", span, record);
             record['traceId'] = span.spanContext().traceId;
             record['spanId'] = span.spanContext().spanId;
             record['traceFlags'] = span.spanContext().traceFlags;
