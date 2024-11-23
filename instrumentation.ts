@@ -4,6 +4,7 @@ import { registerOTel } from "@vercel/otel";
 import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-web";
 
 export async function register() {
+  console.log("Registering OpenTelemetry", process.env.NEXT_RUNTIME);
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     const { ZipkinExporter } = await import("@opentelemetry/exporter-zipkin");
 
