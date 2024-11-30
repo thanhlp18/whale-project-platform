@@ -13,7 +13,7 @@ generator json {
 
 model User {
   id            String    @id @default(uuid())
-  name          String
+  name          String?
   email         String?   @unique
   emailVerified DateTime? @map("email_verified")
   image         String?
@@ -67,6 +67,15 @@ model VerificationRequest {
   updatedAt  DateTime @updatedAt
 
   @@unique([identifier, token])
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
 }
 
 model CachedLangfusePrompt {

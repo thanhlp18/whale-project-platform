@@ -4,10 +4,12 @@ import { logger } from "@/lib/common/logger";
 import { NextAuthOptions } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import GoogleProvider from "next-auth/providers/google";
+import EmailProvider from "next-auth/providers/email";
 import { getJwtSecretKey, sign, verify } from "./jwt";
 import { isDev } from "@/lib/common/env";
 import { prisma } from "@/prisma/client";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import { sendVerificationRequest } from "@/auth/utils/sendVerificationRequest";
 
 const JWT_SECRET_KEY: string = getJwtSecretKey();
 
@@ -45,6 +47,24 @@ export const nextAuthOptions: NextAuthOptions = {
         };
       },
     }),
+
+    EmailProvider({
+      type: "email",
+      server: {
+        host: env.EMAIL_SERVER_HOST,
+        port: env.EMAIL_SERVER_PORT,
+        auth: {
+          user: env.EMAIL_SERVER_USER,
+          pass: env.EMAIL_SERVER_PASSWORD,
+        },
+      },
+      from: env.EMAIL_FROM,
+      generateVerificationToken() {
+        const randomNum = Math.random() * 9000;
+        return `${Math.floor(1000 + randomNum)}`;
+      },
+      sendVerificationRequest,
+    }),
   ],
   jwt: {
     async encode({ secret, token }) {
@@ -60,7 +80,7 @@ export const nextAuthOptions: NextAuthOptions = {
   pages: {
     signIn: `${env.NEXTAUTH_URL}/auth/signin`,
     signOut: `${env.NEXTAUTH_URL}/auth/signout`,
-    error: `${env.NEXTAUTH_URL}/auth/error`,
+    error: `${env.NEXTAUTH_URL}/login`,
   },
   callbacks: {
     async signIn({ user, account, profile }) {
@@ -76,11 +96,41 @@ export const nextAuthOptions: NextAuthOptions = {
             logger.error("error during signing in.", error);
             return false;
           }
+        case "email":
+          try {
+            const email = account?.userId || account?.providerAccountId || "";
+            logger.info("Signing in with email: ", {
+              data: { email },
+            });
+            return true;
+          } catch (error) {
+            logger.error("error during signing in.", error);
+            return false;
+          }
         default:
           return false;
       }
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, isNewUser, account }) {
+      if (account?.provider === "email" && isNewUser) {
+        const userName = user.name ?? user.email?.split("@")[0];
+        await prisma.user
+          .update({
+            where: {
+              id: user.id,
+            },
+            data: {
+              name: userName ?? "Empty",
+            },
+          })
+          .catch((error) => {
+            logger.error(
+              "Error updating user type to candidate",
+              error instanceof Error ? error.message : error
+            );
+          });
+      }
+
       return { ...token, ...user };
     },
     async session({ session, token }) {

@@ -18,12 +18,25 @@ const corsOptions = {
 export default async function middleware(req: NextRequest) {
   try {
     const origin = req.headers.get("origin") ?? "";
+    const { pathname } = req.nextUrl;
     const isAllowedOrigin =
       allowedOrigins.includes("*") || allowedOrigins.includes(origin);
 
     const isPreflight = req.method === "OPTIONS";
 
     const token: string = getTokenFromRequest(req);
+
+    if (!token) {
+      if (pathname.startsWith("/api")) {
+        return NextResponse.json(
+          { error: "token does not exist", success: false },
+          { status: 401 }
+        );
+      }
+      return NextResponse.redirect(
+        `${env.NEXT_PUBLIC_APP_URL}` + routeMap.nonLogin.loginPage
+      );
+    }
 
     const { id: userId }: any = await verify(token, JWT_SECRET_KEY).catch(
       (err) => {
@@ -59,13 +72,6 @@ export default async function middleware(req: NextRequest) {
   }
 }
 
-// Routes Middleware should not run on
 export const config = {
-  matcher: [
-    "/api/((?!auth|webhook|public|healthz).*)",
-    "/home/:path*",
-    "/util/:path*",
-    "/extract/:path*",
-    "/generate/:path*",
-  ],
+  matcher: ["/home/:path*", "/blogs/:path*", "/community/:path*"],
 };

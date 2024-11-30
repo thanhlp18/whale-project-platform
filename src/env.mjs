@@ -28,9 +28,18 @@ export const env = createEnv({
     GOOGLE_PRIVATE_KEY: z.string().default(""),
 
     // Image service
-    IMAGE_SERVICE_URL: z.string().default("https://imgpush.k8s.thanhshiba.live"),
-    IMAGE_SERVICE_PROCESSOR: z.string("").default("")
-    
+    IMAGE_SERVICE_URL: z
+      .string()
+      .default("https://imgpush.k8s.thanhshiba.live"),
+    IMAGE_SERVICE_PROCESSOR: z.string("").default(""),
+
+    // Email service
+    EMAIL_SERVER_USER: z.string().default(""),
+    EMAIL_SERVER_PASSWORD: z.string().default(""),
+    EMAIL_SERVER_HOST: z.string().default(""),
+    EMAIL_SERVER_PORT: z.number().default(587),
+    EMAIL_FROM: z.string().default(""),
+
   },
   client: {
     NEXT_PUBLIC_APP_URL: z.string().default("https://thanhshiba.live"),
@@ -49,10 +58,12 @@ export const env = createEnv({
     LANGFUSE_SECRET_KEY: process.env.LANGFUSE_SECRET_KEY,
     LANGFUSE_AI_MODEL: process.env.LANGFUSE_AI_MODEL,
     LANGFUSE_ENV_ID: process.env.LANGFUSE_ENV_ID,
-    MAX_RETRY_GET_PROMPT: parseInt(process.env.MAX_RETRY_GET_PROMPT) || undefined,
+    MAX_RETRY_GET_PROMPT:
+      parseInt(process.env.MAX_RETRY_GET_PROMPT) || undefined,
     MAX_RETRY_RUN_LLM: parseInt(process.env.MAX_RETRY_RUN_LLM) || undefined,
     AI_PARSE_LLM_JSON_MODEL: process.env.AI_PARSE_LLM_JSON_MODEL,
-    AI_PARSE_LLM_JSON_MODEL_VERSION: process.env.AI_PARSE_LLM_JSON_MODEL_VERSION,
+    AI_PARSE_LLM_JSON_MODEL_VERSION:
+      process.env.AI_PARSE_LLM_JSON_MODEL_VERSION,
 
     // Google Cloud
     GOOGLE_CLOUD_PROJECT_ID: process.env.GOOGLE_CLOUD_PROJECT_ID,
@@ -61,6 +72,13 @@ export const env = createEnv({
 
     // Image service
     IMAGE_SERVICE_URL: process.env.IMAGE_SERVICE_URL,
-    IMAGE_SERVICE_PROCESSOR: process.env.IMAGE_SERVICE_PROCESSOR
+    IMAGE_SERVICE_PROCESSOR: process.env.IMAGE_SERVICE_PROCESSOR,
+
+    // Email service
+    EMAIL_SERVER_USER: process.env.EMAIL_SERVER_USER,
+    EMAIL_SERVER_PASSWORD: process.env.EMAIL_SERVER_PASSWORD,
+    EMAIL_SERVER_HOST: process.env.EMAIL_SERVER_HOST,
+    EMAIL_SERVER_PORT: process.env.EMAIL_SERVER_PORT ? parseInt(process.env.EMAIL_SERVER_PORT) : undefined,
+    EMAIL_FROM: process.env.EMAIL_FROM,
   },
 });

@@ -21,11 +21,11 @@ const WhaleButton: React.FC<ButtonProps> = ({
   const baseStyles =
     "py-2 px-4 rounded-lg font-semibold focus:outline-none transition duration-200";
   const primaryStyles =
-    "pointer bg-primary-100 text-white hover:bg-primary-80 active:bg-primary-60";
+    "pointer bg-primary-80 text-white hover:bg-primary-100 active:bg-primary-60";
   const outlineStyles =
     "border-2 border-primary-100 text-primary-100 hover:bg-primary-100 hover:text-white active:bg-primary-200 active:text-white";
   const disabledStyles =
-    "bg-gray-100 border-2 border-gray-200 text-gray-400 hover:bg-primary-80 active:bg-primary-100 active:text-white hover:border-primary-100 hover:text-white active:border-primary-100";
+    "bg-gray-100 border-2 border-gray-200 text-gray-400";
   const textStyles =
     "pointer bg-transparent  text-gray-400  hover:text-primary-80 active:text-primary-100";
   const secondaryStyles =
