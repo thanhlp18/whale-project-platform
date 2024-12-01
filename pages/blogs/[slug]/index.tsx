@@ -2,7 +2,6 @@
 "use client";
 import Loader from "@/components/blog/Loader";
 import HomeLayout from "@/layout/homeLayout";
-import { getPostBySlug } from "@/lib/client/blogApi";
 import { BlogPost } from "@/lib/common/types/blog";
 import moment from "moment";
 import { useRouter } from "next/navigation";
@@ -14,6 +13,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import rehypeRaw from "rehype-raw";
 import remarkGfm from "remark-gfm";
+import { useLazyGetPostBySlugQuery } from "@/redux/services/blogApi";
 
 const handleCopyCode = async (code: string) => {
   try {
@@ -34,6 +34,7 @@ export const getServerSideProps = async ({
 };
 
 const BlogPostPage = ({ slug }: { slug: string }) => {
+  const [getPostBySlug] = useLazyGetPostBySlugQuery()
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -44,7 +45,9 @@ const BlogPostPage = ({ slug }: { slug: string }) => {
       if (slug) {
         try {
           // Fetch the post using the slug
-          const fetchedPost = await getPostBySlug(slug);
+          const fetchedPost = await getPostBySlug({ slug })
+            .unwrap()
+            .then((res) => res?.data || null);
           setPost(fetchedPost);
         } catch (err) {
           setError("Error fetching post.");
@@ -60,13 +63,12 @@ const BlogPostPage = ({ slug }: { slug: string }) => {
 
   if (loading)
     return (
-      <div className="max-w-screen-md mx-auto flex items-center justify-center">
+      <div className=" bg-white h-screen w-full mx-auto flex items-center justify-center">
         <Loader />
       </div>
     );
   if (error) return <p className="max-w-screen-md mx-auto">Error: {error}</p>;
   if (!post) return <p className="max-w-screen-md mx-auto">No post found.</p>;
-  console.log(post);
   return (
     <HomeLayout>
       <div className="max-w-screen-lg mx-auto p-4 bg-white h-full rounded-lg">

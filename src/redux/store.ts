@@ -2,16 +2,20 @@ import { isDev } from "@/lib/common/env";
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./features/authSlice";
 import { imageAnalyzingApi } from "@/redux/services/imageAnalyzingApi";
+import { blogApi } from "@/redux/services/blogApi";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       auth: authReducer,
       [imageAnalyzingApi.reducerPath]: imageAnalyzingApi.reducer,
+      [blogApi.reducerPath]: blogApi.reducer,
     },
     devTools: isDev(),
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({}).concat(imageAnalyzingApi.middleware),
+      getDefaultMiddleware({})
+        .concat(imageAnalyzingApi.middleware)
+        .concat(blogApi.middleware),
   });
 };
 

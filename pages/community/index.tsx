@@ -1,10 +1,12 @@
 import WhaleModal from "@/components/ui/modal";
 import HomeLayout from "@/layout/homeLayout";
-import {
-  PublicReligionImage
-} from "@/lib/common/types/imageAnalyzing";
+import Loader from "@/lib/client/components/blog/Loader";
+import WhaleButton from "@/lib/client/components/systemDesign/button";
+import { PublicReligionImage } from "@/lib/common/types/imageAnalyzing";
 import { useLazyGetReligionsQuery } from "@/redux/services/imageAnalyzingApi";
+import { debounce } from "lodash";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 function cn(...classes: string[]) {
@@ -23,7 +25,12 @@ export default function Gallery() {
     useLazyGetReligionsQuery();
 
   useEffect(() => {
-    fetchImage({ pageSize: 20, pageIndex, searchQuery, filter });
+    fetchImage({
+      pageSize: 20,
+      pageIndex: searchQuery ? 0 : pageIndex,
+      searchQuery,
+      filter,
+    });
   }, [pageIndex, filter, searchQuery, fetchImage]);
 
   useEffect(() => {
@@ -37,15 +44,27 @@ export default function Gallery() {
     const handleScroll = () => {
       if (
         window.innerHeight + document.documentElement.scrollTop !==
-        document.documentElement.offsetHeight
+          document.documentElement.offsetHeight ||
+        pageIndex * 20 >= religionImages?.data?.total!
       )
         return;
+      if (!searchQuery) {
+        setPageIndex(0);
+        return;
+      }
       setPageIndex((prevPageIndex) => prevPageIndex + 1);
+      console.log("scroll end");
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    window.addEventListener("scrollend", handleScroll);
+    return () => window.removeEventListener("scrollend", handleScroll);
+  }, [searchQuery, religionImages]);
+
+  useEffect(() => {
+    if (!searchQuery) {
+      setPageIndex(0);
+    }
+  }, [searchQuery]);
 
   const showModal = (religion: PublicReligionImage) => {
     setSelectedReligion(religion);
@@ -62,14 +81,16 @@ export default function Gallery() {
 
   return (
     <HomeLayout>
-      <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+      <div className="mx-auto min-h-full max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
         {/* Filter Row */}
         <div className="mb-4 flex justify-between items-center gap-6">
           <input
             type="text"
             placeholder="Search..."
             className="input input-bordered w-full max-w-xs"
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) =>
+              debounce(() => setSearchQuery(e.target.value), 1000)()
+            }
           />
           <div className="btn-group gap-2 flex flex-row">
             <button
@@ -104,7 +125,11 @@ export default function Gallery() {
             </div>
           ))}
         </div>
-        {isLoading && <p>Loading...</p>}
+        {isLoading && (
+          <div className=" bg-white h-full w-full mx-auto flex items-center justify-center">
+            <Loader />
+          </div>
+        )}
         {isError && <p>Error loading images</p>}
       </div>
     </HomeLayout>
@@ -112,6 +137,7 @@ export default function Gallery() {
 }
 
 function BlurImage({ religion }: { religion: PublicReligionImage }) {
+  const router = useRouter();
   const [zoomPosition, setZoomPosition] = useState({ x: 0, y: 0 });
 
   const handleMouseMove = (event: any) => {
@@ -166,6 +192,15 @@ function BlurImage({ religion }: { religion: PublicReligionImage }) {
         onClose={() => {
           setIsModalVisible(false);
         }}
+        actionButton={
+          <WhaleButton
+            onClick={() => {
+              router.push(`/blogs/write?regionRefId=${religion.id}`);
+            }}
+          >
+            Viết bài
+          </WhaleButton>
+        }
       >
         <>
           <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-lg bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">

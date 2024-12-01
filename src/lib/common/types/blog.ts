@@ -47,3 +47,15 @@ export interface ImageData {
   export interface SingleBlogPostResponse {
     data: BlogPost; // The single blog post object
   }
+  export interface CreateNewBlogPostResponse {
+    id: number;
+    documentId: string;
+    title: string;
+    description: string;
+    slug: string;
+    content: string;
+    test: any; // Assuming test can be of any type
+    createdAt: string; // ISO date string
+    updatedAt: string; // ISO date string
+    publishedAt: string; // ISO date string
+  }

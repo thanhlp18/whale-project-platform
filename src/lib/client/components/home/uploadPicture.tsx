@@ -17,7 +17,7 @@ const UploadPicture: React.FC<UploadPictureProps> = ({
       <h2 className="text-xl font-bold mb-4">Upload Picture</h2>
       <input
         type="file"
-        accept="image/*"
+        accept="image/png, image/jpeg, image/jpg"
         capture="environment"
         onChange={handleImageChange}
         className="mb-4 hidden"

@@ -1,12 +1,12 @@
 // src/components/sideBar.tsx
 import React from "react";
-import Image from "next/image";
+import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import {
   CameraIcon,
   BookOpenIcon,
   PhotoIcon,
-  UserIcon,
+  ArrowLeftStartOnRectangleIcon,
 } from "@heroicons/react/24/solid";
 import WhaleButton from "@/components/systemDesign/button";
 
@@ -35,15 +35,11 @@ const Sidebar: React.FC = () => {
     <div className="fixed top-0 left-0 h-screen w-24 p-4 flex flex-col justify-between bg-white border-2 border-gray-100">
       {/* Site Logo */}
       <div className="flex justify-start mb-8">
-        <button
-          className="py-2 px-4 bg-blue-500 hover:bg-blue-700 rounded"
-          onClick={() => router.push("/home")}
-        >
-          <Image
-            src="/hilink-logo.svg"
+        <button className=" rounded" onClick={() => router.push("/home")}>
+          <img
+            src="/designSystem/keyVisual.svg"
             alt="Site Logo"
-            width={50}
-            height={25}
+            className="w-full"
           />
         </button>
       </div>
@@ -71,10 +67,19 @@ const Sidebar: React.FC = () => {
       </div>
 
       {/* User Logo */}
-      <div className="flex justify-center mt-8">
-        <WhaleButton variant="text" onClick={() => router.push("/blogs")}>
-          <UserIcon width={24} />
-        </WhaleButton>
+      <div className="flex justify-center mt-8 ">
+        <div className="tooltip" data-tip="Logout">
+          <WhaleButton
+            variant="text"
+            onClick={() => {
+              signOut({
+                callbackUrl: "/",
+              });
+            }}
+          >
+            <ArrowLeftStartOnRectangleIcon width={24} />
+          </WhaleButton>
+        </div>
       </div>
     </div>
   );

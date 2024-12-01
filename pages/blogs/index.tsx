@@ -1,18 +1,19 @@
 // src/app/page.tsx
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
-import Link from "next/link";
-import { getAllPosts } from "@/lib/client/blogApi";
-import Loader from "@/components/blog/Loader";
-import { BlogPost } from "@/lib/common/types/blog";
-import Pagination from "@/components/blog/Pagination";
-import HomeLayout from "@/layout/homeLayout";
-import WhaleButton from "@/components/systemDesign/button";
 import { routeMap } from "@/auth/utils/routeMap";
+import Loader from "@/components/blog/Loader";
+import Pagination from "@/components/blog/Pagination";
+import WhaleButton from "@/components/systemDesign/button";
+import HomeLayout from "@/layout/homeLayout";
+import { BlogPost } from "@/lib/common/types/blog";
+import { useLazyGetAllPostsQuery } from "@/redux/services/blogApi";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [getAllPosts] = useLazyGetAllPostsQuery()
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -29,7 +30,11 @@ export default function Home() {
   useEffect(() => {
     const fetchPosts = async (page: number) => {
       try {
-        const { posts, pagination } = await getAllPosts(page, searchQuery);
+        const { posts, pagination } = await getAllPosts({ page, searchQuery })
+          .unwrap()
+          .then(
+            (res) => res?.data || { posts: [], pagination: { pageCount: 1 } }
+          );
         setPosts(posts);
         setTotalPages(pagination.pageCount); // Set total pages
       } catch (error) {
@@ -55,9 +60,9 @@ export default function Home() {
     <HomeLayout>
       <div className="max-w-screen-lg h-full mx-auto p-4">
         {loading && (
-          <div className="w-full flex items-center justify-center">
-            <Loader />
-          </div>
+   <div className=" bg-white h-screen w-full mx-auto flex items-center justify-center">
+   <Loader />
+ </div>
         )}
         {error && <p>{error}</p>}
 

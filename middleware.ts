@@ -62,10 +62,18 @@ export default async function middleware(req: NextRequest) {
     Object.entries(corsOptions).forEach(([key, value]) => {
       response.headers.set(key, value);
     });
-
-    response.headers.set("x-user-id", userId as string);
-
-    return response;
+     /**
+     * Modify request header in middleware:
+     * https://github.com/vercel/examples/blob/main/edge-middleware/modify-request-header/middleware.ts
+     */
+     const requestHeaders = new Headers(req.headers);
+     requestHeaders.set("x-user-id", userId as string);
+ 
+     return NextResponse.next({
+       request: {
+         headers: requestHeaders,
+       },
+     });
   } catch (ex) {
     console.error("validate request error.", ex);
     return new NextResponse(JSON.stringify({ error: ex }), { status: 500 });
@@ -73,5 +81,5 @@ export default async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/home/:path*", "/blogs/:path*", "/community/:path*"],
+  matcher: ["/api/((?!auth|webhook).*)","/home/:path*", "/blogs/:path*", "/community/:path*"],
 };

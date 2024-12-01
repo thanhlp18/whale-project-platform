@@ -48,7 +48,6 @@ h1 {
   margin: 20px auto 20px auto;
   border-radius: 2px;
   max-width: 100%;
-  max-width: 1024px;
   color: #000;
   position: relative;
   line-height: 20px;
@@ -60,7 +59,7 @@ h1 {
 
 .editor-inner {
   width: 100%;
-  max-width: 1024px;
+  max-width: 100%;
   background: #fff;
   position: relative;
 }
@@ -216,10 +215,18 @@ h1 {
   margin-bottom: 8px;
   line-height: normal;
   position: relative;
+  max-width: 100%;
 }
 
 .editor-paragraph:last-child {
   margin-bottom: 0;
+}
+
+.editor-paragraph a span {
+  max-width: calc(100% - 500px);
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .editor-heading-h1 {
@@ -354,7 +361,7 @@ pre::-webkit-scrollbar-thumb {
   background: hsl(0, 0%, 100%);
   padding: 4px;
   width: 100%;
-  max-width: 1024px;
+  max-width: 100%;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
   vertical-align: middle;

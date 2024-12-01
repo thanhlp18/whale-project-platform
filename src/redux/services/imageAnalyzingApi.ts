@@ -2,7 +2,10 @@ import { ResponseData } from "@/lib/server/types/apiData";
 import { baseQuery } from "./baseQuery";
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { Religion } from "@prisma/client";
-import { GetAllPublicImagesResponse, ImageAnalyzingSharePublicRequest } from "@/lib/common/types/imageAnalyzing";
+import {
+  GetAllPublicImagesResponse,
+  ImageAnalyzingSharePublicRequest,
+} from "@/lib/common/types/imageAnalyzing";
 
 export const imageAnalyzingApi = createApi({
   reducerPath: "imageAnalyzingApi",
@@ -42,8 +45,22 @@ export const imageAnalyzingApi = createApi({
         params: { pageSize, pageIndex, filter, searchQuery },
       }),
     }),
+    getReligionById: builder.query<
+      ResponseData<GetAllPublicImagesResponse>,
+      {
+        id: string;
+      }
+    >({
+      query: ({ id }) => ({
+        url: `/api/religions/${id}`,
+      }),
+    }),
   }),
 });
 
-export const { useUploadImageMutation, useSharePublicImageMutation, useLazyGetReligionsQuery } =
-  imageAnalyzingApi;
+export const {
+  useUploadImageMutation,
+  useSharePublicImageMutation,
+  useLazyGetReligionsQuery,
+  useLazyGetReligionByIdQuery,
+} = imageAnalyzingApi;

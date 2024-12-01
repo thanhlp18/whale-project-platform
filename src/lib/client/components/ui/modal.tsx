@@ -1,3 +1,4 @@
+import WhaleButton from "@/lib/client/components/systemDesign/button";
 import React from "react";
 import ReactDOM from "react-dom";
 
@@ -6,6 +7,7 @@ type ModalProps = {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  actionButton?: React.ReactNode;
 };
 
 
@@ -14,6 +16,7 @@ export default function WhaleModal({
   onClose,
   title,
   children,
+  actionButton
 }: ModalProps) {
   if (!isOpen) return null;
 
@@ -23,9 +26,10 @@ export default function WhaleModal({
         <h3 className="font-bold text-lg">{title}</h3>
         <div className="py-4">{children}</div>
         <div className="modal-action">
-          <button className="btn" onClick={onClose}>
+          <WhaleButton variant="outline"  onClick={onClose}>
             Close
-          </button>
+          </WhaleButton>
+          {actionButton}
         </div>
       </div>
     </dialog>,

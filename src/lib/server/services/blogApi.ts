@@ -2,6 +2,21 @@
 import { UserBlogPostData } from "@/lib/common/types/blog";
 import axios, { AxiosInstance } from "axios";
 
+function blobToBase64(blob: Blob) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      if (typeof reader.result === "string") {
+        resolve(reader.result.split(",")[1]); // Only return the Base64 part
+      } else {
+        reject(new Error("Failed to convert blob to base64"));
+      }
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob); // Read the Blob as a Base64 Data URL
+  });
+}
+
 export const api: AxiosInstance = axios.create({
   baseURL: `${process.env.NEXT_PUBLIC_STRAPI_URL}`,
 });
@@ -58,10 +73,19 @@ export const getAllCategories = async () => {
 };
 
 // Upload image with correct structure for referencing in the blog
-export const uploadImage = async (image: File, refId: number) => {
+export const uploadImage = async (image: File | string, refId: number) => {
   try {
     const formData = new FormData();
-    formData.append("files", image);
+    if (typeof image === "string") {
+      console.log("Image is a string", image);
+      const imgBlob = await axios.get(image)
+      console.log("Image blob:", imgBlob);
+     
+      
+
+    } else {
+      formData.append("files", image);
+    }
     formData.append("ref", "api::blog.blog"); // ref: Strapi content-type name (in this case 'blog')
     formData.append("refId", refId.toString()); // refId: Blog post ID
     formData.append("field", "cover"); // field: Image field name in the blog
@@ -76,7 +100,7 @@ export const uploadImage = async (image: File, refId: number) => {
 };
 
 // Create a blog post and handle all fields
-export const createPost = async (postData: UserBlogPostData) => {
+export const createPost = async (postData: UserBlogPostData): Promise<{id: number}> => {
   try {
     const reqData = { data: { ...postData } }; // Strapi required format to post data
     const response = await api.post("api/blogs", reqData);
