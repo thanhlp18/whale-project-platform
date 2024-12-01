@@ -4,7 +4,6 @@ import { registerOTel } from "@vercel/otel";
 import { BatchSpanProcessor } from "@opentelemetry/sdk-trace-web";
 
 export async function register() {
-  console.log("Registering OpenTelemetry", process.env.NEXT_RUNTIME);
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     const { ZipkinExporter } = await import("@opentelemetry/exporter-zipkin");
 
@@ -23,7 +22,6 @@ export async function register() {
         new WinstonInstrumentation({
           enabled: true,
           logHook: (span, record) => {
-            console.log("Winston logHook", span, record);
             record['traceId'] = span.spanContext().traceId;
             record['spanId'] = span.spanContext().spanId;
             record['traceFlags'] = span.spanContext().traceFlags;
