@@ -42,7 +42,7 @@ export const env = createEnv({
 
   },
   client: {
-    NEXT_PUBLIC_APP_URL: z.string().default("https://thanhshiba.live"),
+    NEXT_PUBLIC_APP_URL: z.string().default("https://platform.k8s.thanhshiba.live"),
   },
   runtimeEnv: {
     APP_ENV: process.env.APP_ENV,
