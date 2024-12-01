@@ -53,10 +53,13 @@ export const nextAuthOptions: NextAuthOptions = {
       server: {
         host: env.EMAIL_SERVER_HOST,
         port: env.EMAIL_SERVER_PORT,
-        secure: true, 
+        secure: false, 
         auth: {
           user: env.EMAIL_SERVER_USER,
           pass: env.EMAIL_SERVER_PASSWORD,
+        },
+        tls: {
+          rejectUnauthorized: false, 
         },
       },
       from: env.EMAIL_FROM,
