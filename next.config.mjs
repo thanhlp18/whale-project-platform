@@ -2,6 +2,7 @@
 const nextConfig = {
   output: "standalone",
   reactStrictMode: false,
+  trailingSlash: true,
   transpilePackages: [
     "@ant-design/icons-svg",
     "rc-pagination",
